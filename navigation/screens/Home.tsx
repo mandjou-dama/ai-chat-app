@@ -32,26 +32,26 @@ const BLUR_INTENSITY = 80;
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 export default function HomeScreen() {
-  // const intensity = useSharedValue<number | undefined>(0);
-  // const drawerProgress = useDrawerProgress();
+  const intensity = useSharedValue<number | undefined>(0);
+  const drawerProgress = useDrawerProgress();
   const { width } = useWindowDimensions();
   const text = useThemeColor("text");
   const background = useThemeColor("background");
 
-  // useAnimatedReaction(
-  //   () => drawerProgress.value,
-  //   (progress) => {
-  //     intensity.value = progress * BLUR_INTENSITY;
-  //   }
-  // );
+  useAnimatedReaction(
+    () => drawerProgress.value,
+    (progress) => {
+      intensity.value = progress * BLUR_INTENSITY;
+    }
+  );
 
-  // const animatedStyle = useAnimatedStyle(() => ({
-  //   transform: [
-  //     {
-  //       translateX: drawerProgress.value * (width / 3),
-  //     },
-  //   ],
-  // }));
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: drawerProgress.value * (width / 3),
+      },
+    ],
+  }));
 
   return (
     <KeyboardProvider>
@@ -78,11 +78,12 @@ export default function HomeScreen() {
                 <ChatFooter />
               </Animated.View>
             </KeyboardAvoidingView>
-            {/* <AnimatedBlurView
-            style={StyleSheet.absoluteFill}
-            pointerEvents="none"
-            intensity={intensity}
-          /> */}
+            <AnimatedBlurView
+              style={StyleSheet.absoluteFill}
+              pointerEvents="none"
+              tint="dark"
+              intensity={intensity}
+            />
           </SafeAreaView>
           <Menu />
         </SafeAreaProvider>
