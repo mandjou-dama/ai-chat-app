@@ -1,0 +1,11 @@
+const CHAT_BOX_HEIGHT = 100;
+const CHAT_BOX_MARGIN_V = 6;
+const RADIUS = 28;
+const BLUR_INTENSITY = 80;
+
+export const VALUES = {
+  CHAT_BOX_HEIGHT,
+  CHAT_BOX_MARGIN_V,
+  RADIUS,
+  BLUR_INTENSITY,
+};

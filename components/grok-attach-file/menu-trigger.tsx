@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Keyboard, Pressable, StyleSheet } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -47,7 +47,10 @@ export const MenuTrigger: FC = () => {
         rContainerStyle,
         styles.container,
       ]}
-      onPress={() => isMenuOpen.set(true)}
+      onPress={() => {
+        isMenuOpen.set(true);
+        Keyboard.dismiss();
+      }}
     >
       <Paperclip size={16} color="white" />
     </AnimatedPressable>
