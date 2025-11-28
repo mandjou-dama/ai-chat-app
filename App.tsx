@@ -8,19 +8,24 @@ import {
   ViewStyle,
   useWindowDimensions,
   Pressable,
-  Text,
+  Keyboard,
 } from "react-native";
 import React from "react";
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { ThemedText, ThemedTextWrapper } from "./components/ThemedText";
+import { useThemeColor } from "./hooks/useThemeColor";
+import {
+  KeyboardAvoidingView,
+  KeyboardProvider,
+} from "react-native-keyboard-controller";
 import {
   AudioLines,
   Camera,
   File,
   Ghost,
-  HeartCrackIcon,
+  Heart,
   ImagePlus,
   LucideIcon,
-  Menu,
+  Menu as MenuIcon,
   Paperclip,
   ScanSearch,
   Settings2,
@@ -36,8 +41,11 @@ import {
   DrawerNavigationProp,
   useDrawerProgress,
 } from "@react-navigation/drawer";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import { AttachFileMenuProvider } from "./lib/attach-file-menu";
+import { MenuTrigger } from "./components/grok-attach-file/menu-trigger";
+import { Menu } from "./components/grok-attach-file/menu";
 
 const CHAT_BOX_HEIGHT = 100;
 const CHAT_BOX_MARGIN_V = 6;
@@ -47,108 +55,137 @@ const BLUR_INTENSITY = 80;
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 export default function GrokSidebar() {
-  const intensity = useSharedValue<number | undefined>(0);
-  const drawerProgress = useDrawerProgress();
+  // const intensity = useSharedValue<number | undefined>(0);
+  // const drawerProgress = useDrawerProgress();
   const { width } = useWindowDimensions();
+  const text = useThemeColor("text");
+  const background = useThemeColor("background");
 
-  useAnimatedReaction(
-    () => drawerProgress.value,
-    (progress) => {
-      intensity.value = progress * BLUR_INTENSITY;
-    }
-  );
+  // useAnimatedReaction(
+  //   () => drawerProgress.value,
+  //   (progress) => {
+  //     intensity.value = progress * BLUR_INTENSITY;
+  //   }
+  // );
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: drawerProgress.value * (width / 3),
-      },
-    ],
-  }));
+  // const animatedStyle = useAnimatedStyle(() => ({
+  //   transform: [
+  //     {
+  //       translateX: drawerProgress.value * (width / 3),
+  //     },
+  //   ],
+  // }));
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={CHAT_BOX_MARGIN_V}
-      >
-        <Animated.View style={[styles.container, animatedStyle]}>
-          <Header />
-          <ScrollView
-            style={styles.screen}
-            contentContainerStyle={styles.screenInner}
+    <KeyboardProvider>
+      <AttachFileMenuProvider>
+        <SafeAreaProvider>
+          <SafeAreaView
+            style={[styles.container, { backgroundColor: background }]}
+            edges={["top", "bottom"]}
           >
-            {/* <HeartCrackIcon color={text + "24"} size={84} /> */}
-          </ScrollView>
-          <SuggestionBox />
-          <ChatBox />
-        </Animated.View>
-      </KeyboardAvoidingView>
-      <AnimatedBlurView
-        style={StyleSheet.absoluteFill}
-        pointerEvents="none"
-        intensity={intensity}
-      />
-    </SafeAreaView>
+            <KeyboardAvoidingView
+              behavior="padding"
+              style={{ flex: 1 }}
+              keyboardVerticalOffset={CHAT_BOX_MARGIN_V}
+            >
+              <Animated.View style={[styles.container]}>
+                <Header />
+                <ScrollView
+                  style={styles.screen}
+                  contentContainerStyle={styles.screenInner}
+                >
+                  <Heart color={text + "24"} size={84} />
+                </ScrollView>
+                <SuggestionBox />
+                <ChatBox />
+              </Animated.View>
+            </KeyboardAvoidingView>
+            {/* <AnimatedBlurView
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+            intensity={intensity}
+          /> */}
+          </SafeAreaView>
+          <Menu />
+        </SafeAreaProvider>
+      </AttachFileMenuProvider>
+    </KeyboardProvider>
   );
 }
 
 const Header = () => {
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
+  // const navigation = useNavigation<DrawerNavigationProp<any>>();
 
   return (
     <View style={styles.header}>
       <Pressable
         style={styles.headerLeft}
-        onPress={() => navigation.toggleDrawer()}
+        // onPress={() => navigation.toggleDrawer()}
         hitSlop={30}
       >
-        <Menu size={21} />
+        <ThemedTextWrapper>
+          <MenuIcon size={21} />
+        </ThemedTextWrapper>
       </Pressable>
       <View>
-        <Text style={styles.headerTitle}>Grok</Text>
+        <ThemedText style={styles.headerTitle} type="defaultSemiBold">
+          Grok
+        </ThemedText>
       </View>
       <View style={styles.headerRight}>
-        <Ghost size={21} />
+        <ThemedTextWrapper>
+          <Ghost size={21} />
+        </ThemedTextWrapper>
       </View>
     </View>
   );
 };
 
 const ChatBox = () => {
+  const text = useThemeColor("text");
   return (
     <View
       style={[
         styles.chatBox,
         styles.round,
         {
-          backgroundColor: "#00000010",
-          borderColor: "#ffffff20",
+          backgroundColor: text + "10",
+          borderColor: text + "10",
         },
       ]}
     >
-      <Text style={styles.chatInput}>
-        <TextInput placeholder="Ask Anything" selectionColor="#ffffff83" />
-      </Text>
+      <ThemedTextWrapper style={styles.chatInput}>
+        <TextInput
+          keyboardAppearance="dark"
+          placeholder="Ask Anything"
+          selectionColor={text}
+        />
+      </ThemedTextWrapper>
       <View style={styles.chatActionBar}>
         <View style={styles.cluster}>
+          <MenuTrigger />
+          {/* <Paperclip size={16} color={text} /> */}
           <Button onPress={() => console.log("Send pressed")}>
-            <Paperclip size={16} color="#ffffff83" />
-          </Button>
-          <Button onPress={() => console.log("Send pressed")}>
-            <Zap size={16} color="#ffffff83" />
+            <Zap size={16} color={text} />
           </Button>
         </View>
         <Button
           style={{
-            backgroundColor: "#ffffff83",
+            backgroundColor: text,
             paddingHorizontal: 14,
           }}
         >
-          <AudioLines size={16} strokeWidth={2.4} />
-
-          <Text style={{ fontSize: 15 }}>Speak</Text>
+          <ThemedTextWrapper colorName="background">
+            <AudioLines size={16} strokeWidth={2.4} />
+          </ThemedTextWrapper>
+          <ThemedText
+            colorName="background"
+            type="defaultSemiBold"
+            style={{ fontSize: 15 }}
+          >
+            Speak
+          </ThemedText>
         </Button>
       </View>
     </View>
@@ -164,12 +201,14 @@ const Button = ({
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }) => {
+  const text = useThemeColor("text");
+
   return (
     <TouchableOpacity
       style={[
         styles.chatBtn,
         {
-          borderColor: "#ffffff83",
+          borderColor: text + "10",
         },
         style,
       ]}
@@ -212,21 +251,22 @@ const SuggestionBox = () => {
 };
 
 const SuggestionCard = ({ icon: Icon, title }: Suggestion) => {
+  const text = useThemeColor("text");
   return (
     <TouchableOpacity
       style={[
         styles.suggestionCard,
         styles.round,
         {
-          backgroundColor: "#00000010",
-          borderColor: "#ffffff20",
+          borderColor: text + "10",
+          backgroundColor: text + "10",
         },
       ]}
       activeOpacity={0.8}
       onPress={() => console.log(`Suggestion pressed: ${title}`)}
     >
-      <Icon size={22} color={"#fff"} style={{ opacity: 0.8 }} />
-      <Text style={{ color: "#fff", opacity: 0.8 }}>{title}</Text>
+      <Icon size={22} color={text} style={{ opacity: 0.8 }} />
+      <ThemedText colorName="text">{title}</ThemedText>
     </TouchableOpacity>
   );
 };
@@ -247,7 +287,7 @@ const styles = StyleSheet.create({
   round: {
     borderRadius: RADIUS,
     borderCurve: "continuous",
-    borderWidth: 2,
+    borderWidth: 1,
   },
   chatBox: {
     minHeight: CHAT_BOX_HEIGHT,
@@ -270,7 +310,7 @@ const styles = StyleSheet.create({
   },
   chatBtn: {
     padding: 8,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 50,
     flexDirection: "row",
     alignItems: "center",
@@ -293,10 +333,11 @@ const styles = StyleSheet.create({
   suggestionCard: {
     flexDirection: "column",
     alignItems: "flex-start",
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 20,
     gap: 10,
     borderRadius: RADIUS,
-    backgroundColor: "#f0f0f0",
+    // backgroundColor: "#f0f0f0",
   },
   header: {
     flexDirection: "row",
