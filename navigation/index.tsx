@@ -1,15 +1,16 @@
+import { Linking, useColorScheme, useWindowDimensions } from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-
-import HomeScreen from "./screens/Home";
 import { NavigationContainer } from "@react-navigation/native";
-import { Linking, useColorScheme, useWindowDimensions } from "react-native";
+
 import { useThemeColor } from "../hooks/useThemeColor";
 import DrawerContent from "../components/drawer/drawer-content";
+
+import HomeScreen from "./screens/Home";
 
 const Drawer = createDrawerNavigator();
 
