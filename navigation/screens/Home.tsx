@@ -1,10 +1,7 @@
 import { StyleSheet, ScrollView, useWindowDimensions } from "react-native";
 import React from "react";
 import { useThemeColor } from "../../hooks/useThemeColor";
-import {
-  KeyboardAvoidingView,
-  KeyboardProvider,
-} from "react-native-keyboard-controller";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { Heart } from "lucide-react-native";
 import { BlurView } from "expo-blur";
 import Animated, {
@@ -12,13 +9,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import {
-  DrawerNavigationProp,
-  useDrawerProgress,
-} from "@react-navigation/drawer";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import { AttachFileMenuProvider } from "../../lib/attach-file-menu";
+import { useDrawerProgress } from "@react-navigation/drawer";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Menu } from "../../components/grok-attach-file/menu";
 import ChatHeader from "../../components/chat-header";
 import ChatFooter from "../../components/chat-footer";
