@@ -54,41 +54,37 @@ export default function HomeScreen() {
   }));
 
   return (
-    <KeyboardProvider>
-      <AttachFileMenuProvider>
-        <SafeAreaProvider>
-          <SafeAreaView
-            style={[styles.container, { backgroundColor: background }]}
-            edges={["top", "bottom"]}
-          >
-            <KeyboardAvoidingView
-              behavior="padding"
-              style={{ flex: 1 }}
-              keyboardVerticalOffset={CHAT_BOX_MARGIN_V}
+    <React.Fragment>
+      <SafeAreaView
+        style={[styles.container, { backgroundColor: background }]}
+        edges={["top", "bottom"]}
+      >
+        <KeyboardAvoidingView
+          behavior="padding"
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={CHAT_BOX_MARGIN_V}
+        >
+          <Animated.View style={[styles.container]}>
+            <ChatHeader />
+            <ScrollView
+              style={styles.screen}
+              contentContainerStyle={styles.screenInner}
             >
-              <Animated.View style={[styles.container]}>
-                <ChatHeader />
-                <ScrollView
-                  style={styles.screen}
-                  contentContainerStyle={styles.screenInner}
-                >
-                  <Heart color={text + "24"} size={84} />
-                </ScrollView>
-                <SuggestionBox />
-                <ChatFooter />
-              </Animated.View>
-            </KeyboardAvoidingView>
-            <AnimatedBlurView
-              style={StyleSheet.absoluteFill}
-              pointerEvents="none"
-              tint="dark"
-              intensity={intensity}
-            />
-          </SafeAreaView>
-          <Menu />
-        </SafeAreaProvider>
-      </AttachFileMenuProvider>
-    </KeyboardProvider>
+              <Heart color={text + "24"} size={84} />
+            </ScrollView>
+            <SuggestionBox />
+            <ChatFooter />
+          </Animated.View>
+        </KeyboardAvoidingView>
+        <AnimatedBlurView
+          style={StyleSheet.absoluteFill}
+          pointerEvents="none"
+          tint="dark"
+          intensity={intensity}
+        />
+      </SafeAreaView>
+      <Menu />
+    </React.Fragment>
   );
 }
 
