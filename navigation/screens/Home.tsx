@@ -70,8 +70,6 @@ export default function HomeScreen() {
             <ChatHeader />
             <View style={styles.newChatBody}>
               <NewChatBody />
-
-              <StartTimerButton />
             </View>
             {/* <ScrollView
               style={styles.screen}

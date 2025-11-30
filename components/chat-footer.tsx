@@ -5,6 +5,7 @@ import { AudioLines, Zap } from "lucide-react-native";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { VALUES } from "../constants/Values";
 import { Button } from "./button";
+import SendMessageButton from "./send-message-button";
 
 export default function ChatFooter() {
   const text = useThemeColor("text");
@@ -34,23 +35,7 @@ export default function ChatFooter() {
             <Zap size={16} color={text} />
           </Button>
         </View>
-        <Button
-          style={{
-            backgroundColor: text,
-            paddingHorizontal: 14,
-          }}
-        >
-          <ThemedTextWrapper colorName="background">
-            <AudioLines size={16} strokeWidth={2.4} />
-          </ThemedTextWrapper>
-          <ThemedText
-            colorName="background"
-            type="defaultSemiBold"
-            style={{ fontSize: 15 }}
-          >
-            Speak
-          </ThemedText>
-        </Button>
+        <SendMessageButton />
       </View>
     </View>
   );

@@ -34,6 +34,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { colorKit } from "reanimated-color-picker";
 import { impactAsync, ImpactFeedbackStyle } from "expo-haptics";
 import { easeGradient } from "../lib/ease-gradient";
+import { SendHorizontal } from "lucide-react-native";
+import { COLORS } from "../constants";
 
 // opal-start-timer-button-animation 🔽
 
@@ -45,29 +47,29 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 // Button geometry
 // - BUTTON_WIDTH: full-width minus horizontal margins
 // - BUTTON_HEIGHT: fixed height used as base unit for all internal shape math
-const BUTTON_WIDTH = Dimensions.get("window").width - 24;
-const BUTTON_HEIGHT = 58;
+const BUTTON_WIDTH = 110;
+const BUTTON_HEIGHT = 40;
 
 // "Breathing" ovals constants
 // - OVAL_BREATHE_DURATION: ping-pong timing (ms) so left/right ovals alternate calmly
 // - PRIMARY/SECONDARY: endpoints for color interpolation to create subtle hue shift
 const OVAL_BREATHE_DURATION = 4000;
-const OVAL_PRIMARY_COLOR = "#04cea9ff";
-const OVAL_SECONDARY_COLOR = "#5c8e5bff";
+const OVAL_PRIMARY_COLOR = COLORS.white;
+const OVAL_SECONDARY_COLOR = COLORS.black;
 
 // Shimmer constants
 // - SHIMMER_DELAY: initial pause so shimmer doesn't compete with first CTA impression
 // - SHIMMER_BASE_DURATION: base sweep speed; scaled by width for consistent perceived velocity
 // - SHIMMER_REFERENCE_WIDTH: width used to compute responsive duration multiplier
 // - SHIMMER_OVERSHOOT: 1.2 makes the sweep start/end offscreen to avoid visible pop-in/out
-const SHIMMER_DELAY = 4000;
-const SHIMMER_BASE_DURATION = 1500;
-const SHIMMER_REFERENCE_WIDTH = 200;
+const SHIMMER_DELAY = 2000;
+const SHIMMER_BASE_DURATION = 3000;
+const SHIMMER_REFERENCE_WIDTH = 100;
 const SHIMMER_OVERSHOOT = 1.2;
 
-const GRADIENT_COLOR = "#99f6e4";
+const GRADIENT_COLOR = COLORS.white;
 
-const StartTimerButton = () => {
+const SendMessageButton = () => {
   // Oval layout derived from button height to keep proportions across devices
   const ovalWidth = BUTTON_HEIGHT * 3.4;
   const ovalHeight = BUTTON_HEIGHT * 1.7;
@@ -240,7 +242,7 @@ const StartTimerButton = () => {
   });
 
   return (
-    <Animated.View entering={FadeInDown}>
+    <Animated.View>
       <AnimatedPressable
         onPressIn={() => {
           impactAsync(ImpactFeedbackStyle.Light).catch(() => {});
@@ -259,7 +261,6 @@ const StartTimerButton = () => {
           {
             alignSelf: "center",
             borderRadius: 999,
-            marginBottom: 16, // tailwind "mb-4"
             overflow: "hidden",
             borderColor: Platform.OS === "android" ? "#111827" : "#374151", // approximates neutral-900 / neutral-700
           },
@@ -294,25 +295,28 @@ const StartTimerButton = () => {
             gap: 6, // Adjust gap as needed
             alignItems: "center",
             justifyContent: "center",
+            marginLeft: -6,
           }}
         >
-          <Ionicons name="play" size={18} color="white" />
+          <SendHorizontal size={16} color="white" />
           <Text style={{ color: "white", fontSize: 16, fontWeight: "medium" }}>
-            Start Timer
+            Send
           </Text>
         </View>
         {/* Shimmer */}
         <Animated.View
           pointerEvents="none"
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: "50%",
-            flexDirection: "row",
-            ...rShimmerStyle,
-          }}
+          style={[
+            {
+              position: "absolute",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: "50%",
+              flexDirection: "row",
+            },
+            rShimmerStyle,
+          ]}
           // Capture measured width to compute initial offscreen start
           onLayout={(e) =>
             shimmerComponentWidth.set(e.nativeEvent.layout.width)
@@ -358,6 +362,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default memo(StartTimerButton);
+export default memo(SendMessageButton);
 
 // opal-start-timer-button-animation 🔼
