@@ -22,6 +22,7 @@ import { Menu } from "../../components/grok-attach-file/menu";
 import ChatHeader from "../../components/chat-header";
 import ChatFooter from "../../components/chat-footer";
 import SuggestionBox from "../../components/suggestion-box";
+import StartTimerButton from "../../components/send-message-button";
 import NewChatBody from "../../components/new-chat-body";
 import { COLORS, SPACES } from "../../constants";
 
@@ -69,6 +70,8 @@ export default function HomeScreen() {
             <ChatHeader />
             <View style={styles.newChatBody}>
               <NewChatBody />
+
+              <StartTimerButton />
             </View>
             {/* <ScrollView
               style={styles.screen}
