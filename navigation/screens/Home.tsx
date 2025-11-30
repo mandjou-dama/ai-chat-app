@@ -1,5 +1,10 @@
 import React from "react";
-import { StyleSheet, ScrollView, useWindowDimensions } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { Heart } from "lucide-react-native";
 import { BlurView } from "expo-blur";
@@ -17,6 +22,8 @@ import { Menu } from "../../components/grok-attach-file/menu";
 import ChatHeader from "../../components/chat-header";
 import ChatFooter from "../../components/chat-footer";
 import SuggestionBox from "../../components/suggestion-box";
+import NewChatBody from "../../components/new-chat-body";
+import { COLORS, SPACES } from "../../constants";
 
 const CHAT_BOX_HEIGHT = 100;
 const CHAT_BOX_MARGIN_V = 6;
@@ -50,7 +57,7 @@ export default function HomeScreen() {
   return (
     <React.Fragment>
       <SafeAreaView
-        style={[styles.container, { backgroundColor: background }]}
+        style={[styles.container, { backgroundColor: COLORS.black }]}
         edges={["top", "bottom"]}
       >
         <KeyboardAvoidingView
@@ -60,13 +67,16 @@ export default function HomeScreen() {
         >
           <Animated.View style={[styles.container]}>
             <ChatHeader />
-            <ScrollView
+            <View style={styles.newChatBody}>
+              <NewChatBody />
+            </View>
+            {/* <ScrollView
               style={styles.screen}
               contentContainerStyle={styles.screenInner}
             >
               <Heart color={text + "24"} size={84} />
-            </ScrollView>
-            <SuggestionBox />
+            </ScrollView> */}
+            {/* <SuggestionBox /> */}
             <ChatFooter />
           </Animated.View>
         </KeyboardAvoidingView>
@@ -88,7 +98,14 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-    padding: 16,
+    padding: SPACES.lg,
+  },
+  newChatBody: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingHorizontal: SPACES.lg,
+    marginTop: SPACES.lg * 6,
   },
   screenInner: {
     flexGrow: 1,

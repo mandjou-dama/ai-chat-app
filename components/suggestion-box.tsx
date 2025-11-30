@@ -1,4 +1,10 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import React from "react";
 import { ThemedText } from "../components/ThemedText";
 import { useThemeColor } from "../hooks/useThemeColor";
@@ -59,7 +65,7 @@ const SuggestionCard = ({ icon: Icon, title }: Suggestion) => {
       onPress={() => console.log(`Suggestion pressed: ${title}`)}
     >
       <Icon size={22} color={text} style={{ opacity: 0.8 }} />
-      <ThemedText colorName="text">{title}</ThemedText>
+      <Text style={styles.suggestionText}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -76,6 +82,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: VALUES.CHAT_BOX_MARGIN_V,
     gap: 8,
+  },
+  suggestionText: {
+    fontSize: 14,
+    fontWeight: "500",
   },
   suggestionCard: {
     flexDirection: "column",
