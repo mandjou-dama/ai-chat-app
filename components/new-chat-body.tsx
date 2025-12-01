@@ -10,6 +10,8 @@ import {
   File,
 } from "lucide-react-native";
 import { COLORS, SPACES } from "../constants";
+import { useKeyboardState } from "react-native-keyboard-controller";
+import Animated, { Easing, FadeIn, FadeOut } from "react-native-reanimated";
 
 type Suggestion = {
   icon: LucideIcon;
@@ -27,25 +29,32 @@ const suggestions: Suggestion[] = [
 ];
 
 export default function NewChatBody() {
+  const keyboardState = useKeyboardState();
+
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.helloText}>
         Hi Mandjou, how can I help you today?
       </Text>
 
-      <View style={styles.suggestionsContainer}>
-        {suggestions.map((suggestion) => (
-          <View key={suggestion.title} style={styles.suggestion}>
-            <suggestion.icon color={suggestion.color} size={18} />
-            <Text style={styles.suggestionText}>{suggestion.title}</Text>
-          </View>
-        ))}
-      </View>
+      <Animated.View entering={FadeIn.delay(0)} exiting={FadeOut.delay(0)}>
+        <View style={styles.suggestionsContainer}>
+          {suggestions.map((suggestion, index) => (
+            <View key={suggestion.title + index} style={styles.suggestion}>
+              <suggestion.icon color={suggestion.color} size={18} />
+              <Text style={styles.suggestionText}>{suggestion.title}</Text>
+            </View>
+          ))}
+        </View>
+      </Animated.View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingBottom: SPACES.lg * 16,
+  },
   helloText: {
     fontSize: 28,
     lineHeight: 38,

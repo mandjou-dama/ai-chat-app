@@ -68,9 +68,19 @@ export default function HomeScreen() {
         >
           <Animated.View style={[styles.container]}>
             <ChatHeader />
-            <View style={styles.newChatBody}>
+
+            <ScrollView
+              style={styles.screen}
+              contentContainerStyle={{
+                flexGrow: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                // paddingTop: SPACES.lg * 2,
+              }}
+            >
               <NewChatBody />
-            </View>
+            </ScrollView>
+
             {/* <ScrollView
               style={styles.screen}
               contentContainerStyle={styles.screenInner}

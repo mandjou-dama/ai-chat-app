@@ -1,6 +1,8 @@
-import { Pressable, View, StyleSheet } from "react-native";
+import { Pressable, View, StyleSheet, Text } from "react-native";
 import { ThemedText, ThemedTextWrapper } from "./ThemedText";
-import { Ghost, MenuIcon } from "lucide-react-native";
+import { Ghost, MenuIcon, SquarePen } from "lucide-react-native";
+import { Image } from "expo-image";
+import { COLORS } from "../constants";
 
 export default function ChatHeader() {
   // const navigation = useNavigation<DrawerNavigationProp<any>>();
@@ -12,19 +14,14 @@ export default function ChatHeader() {
         // onPress={() => navigation.toggleDrawer()}
         hitSlop={30}
       >
-        <ThemedTextWrapper>
-          <MenuIcon size={21} />
-        </ThemedTextWrapper>
+        <Image
+          source={require("../assets/profile.jpeg")}
+          style={styles.headerAvatar}
+        />
       </Pressable>
-      <View>
-        <ThemedText style={styles.headerTitle} type="defaultSemiBold">
-          Grok
-        </ThemedText>
-      </View>
+      <Text style={styles.headerTitle}>Nothing AI</Text>
       <View style={styles.headerRight}>
-        <ThemedTextWrapper>
-          <Ghost size={21} />
-        </ThemedTextWrapper>
+        <SquarePen size={21} />
       </View>
     </View>
   );
@@ -42,9 +39,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  headerTitle: {},
+  headerAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
+  headerTitle: {
+    // position: "absolute",
+    // left: "50%",
+    // transform: [{ translateX: "-50%" }],
+    fontSize: 16,
+    fontFamily: "InterSemiBold",
+    color: COLORS.white,
+  },
   headerRight: {
     flexDirection: "row",
+    justifyContent: "flex-end",
     alignItems: "center",
+    width: 32,
+    height: 32,
   },
 });

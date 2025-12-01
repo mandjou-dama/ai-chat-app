@@ -6,7 +6,6 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import { BlurView } from "expo-blur";
 import {
   Blur,
@@ -262,7 +261,7 @@ const SendMessageButton = () => {
             alignSelf: "center",
             borderRadius: 999,
             overflow: "hidden",
-            borderColor: Platform.OS === "android" ? "#111827" : "#374151", // approximates neutral-900 / neutral-700
+            borderColor: Platform.OS === "android" ? "#111827" : null, // approximates neutral-900 / neutral-700
           },
         ]}
       >
@@ -350,7 +349,7 @@ const styles = StyleSheet.create({
   container: {
     height: BUTTON_HEIGHT,
     width: BUTTON_WIDTH,
-    borderWidth: Platform.OS === "ios" ? StyleSheet.hairlineWidth : 1,
+    // borderWidth: Platform.OS === "ios" ? StyleSheet.hairlineWidth : 1,
     borderCurve: "continuous",
   },
   canvas: {
