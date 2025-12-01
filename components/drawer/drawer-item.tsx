@@ -10,6 +10,7 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
+import { COLORS } from "../../constants";
 
 type Props = {
   /**
@@ -99,8 +100,6 @@ type Props = {
  * A component used to show an action item with an icon and a label in a navigation drawer.
  */
 export function DrawerItem(props: Props) {
-  const { colors, fonts } = useTheme();
-
   const {
     // href,
     icon,
@@ -108,9 +107,9 @@ export function DrawerItem(props: Props) {
     labelStyle,
     focused = false,
     allowFontScaling,
-    activeTintColor = colors.primary,
+    activeTintColor = COLORS.primary,
     inactiveTintColor = "",
-    activeBackgroundColor = "",
+    activeBackgroundColor = COLORS.white + "10",
     inactiveBackgroundColor = "transparent",
     style,
     onPress,

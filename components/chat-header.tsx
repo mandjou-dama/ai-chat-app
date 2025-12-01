@@ -1,6 +1,12 @@
 import { Pressable, View, StyleSheet, Text } from "react-native";
 import { ThemedText, ThemedTextWrapper } from "./ThemedText";
-import { Ghost, MenuIcon, SquarePen } from "lucide-react-native";
+import {
+  CircleFadingPlus,
+  Ghost,
+  MenuIcon,
+  MessageCircle,
+  SquarePen,
+} from "lucide-react-native";
 import { Image } from "expo-image";
 import { COLORS } from "../constants";
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +29,7 @@ export default function ChatHeader() {
       </Pressable>
       <Text style={styles.headerTitle}>Nothing AI</Text>
       <View style={styles.headerRight}>
-        <SquarePen color={COLORS.white} size={21} />
+        <CircleFadingPlus color={COLORS.white} size={21} />
       </View>
     </View>
   );

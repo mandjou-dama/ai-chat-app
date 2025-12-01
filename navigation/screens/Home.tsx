@@ -4,9 +4,9 @@ import {
   ScrollView,
   useWindowDimensions,
   View,
+  Platform,
 } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
-import { Heart } from "lucide-react-native";
 import { BlurView } from "expo-blur";
 import Animated, {
   useAnimatedReaction,
@@ -17,14 +17,12 @@ import { useDrawerProgress } from "@react-navigation/drawer";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useThemeColor } from "../../hooks/useThemeColor";
+import { COLORS, SPACES } from "../../constants";
 
 import { Menu } from "../../components/grok-attach-file/menu";
 import ChatHeader from "../../components/chat-header";
 import ChatFooter from "../../components/chat-footer";
-import SuggestionBox from "../../components/suggestion-box";
-import StartTimerButton from "../../components/send-message-button";
 import NewChatBody from "../../components/new-chat-body";
-import { COLORS, SPACES } from "../../constants";
 
 const CHAT_BOX_HEIGHT = 100;
 const CHAT_BOX_MARGIN_V = 6;
@@ -91,12 +89,15 @@ export default function HomeScreen() {
             <ChatFooter />
           </Animated.View>
         </KeyboardAvoidingView>
-        <AnimatedBlurView
-          style={StyleSheet.absoluteFill}
-          pointerEvents="none"
-          tint="dark"
-          intensity={intensity}
-        />
+
+        {Platform.OS === "ios" && (
+          <AnimatedBlurView
+            style={StyleSheet.absoluteFill}
+            pointerEvents="none"
+            tint="dark"
+            intensity={intensity}
+          />
+        )}
       </SafeAreaView>
       <Menu />
     </React.Fragment>

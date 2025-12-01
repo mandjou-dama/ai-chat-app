@@ -5,9 +5,10 @@ import {
   useDrawerStatus,
 } from "@react-navigation/drawer";
 import { Image } from "expo-image";
-import { Github, Linkedin, LogOut } from "lucide-react-native";
+import { Ellipsis, LogOut } from "lucide-react-native";
 import React, { memo, useCallback, useEffect, useState } from "react";
 import {
+  Pressable,
   ScrollView,
   StyleProp,
   StyleSheet,
@@ -18,6 +19,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ThemedText as Text } from "../ThemedText";
 import { DrawerItemList } from "./drawer-item-list";
+import { COLORS } from "../../constants";
 
 const DrawerContent = memo((props: DrawerContentComponentProps) => {
   const demos = (props.state?.routes?.length || 0) - 1 || 0;
@@ -29,7 +31,7 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
 
   return (
     <SafeAreaView edges={["top", "bottom"]} style={styles.container}>
-      <Header routes={demos} />
+      {/* <Header routes={demos} /> */}
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         keyboardShouldPersistTaps="handled"
@@ -44,7 +46,6 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
 const Header = ({ routes }: { routes: number }) => {
   const text = useThemeColor("text");
   const tint = useThemeColor("tint");
-  const textColor = text + "EA";
 
   return (
     <View
@@ -72,7 +73,7 @@ const Header = ({ routes }: { routes: number }) => {
           source={{
             uri: "https://images.pexels.com/photos/4029925/pexels-photo-4029925.jpeg",
           }}
-          style={styles.image}
+          // style={styles.image}
         />
         <View style={{}}>
           <Text style={styles.headerText}>Mandjou Dama</Text>
@@ -86,47 +87,20 @@ const Header = ({ routes }: { routes: number }) => {
   );
 };
 
-const Button = ({
-  children,
-  onPress,
-  style,
-}: {
-  children: React.ReactNode;
-  onPress?: () => void;
-  style?: StyleProp<ViewStyle>;
-}) => {
-  const text = useThemeColor("text");
-  const tint = useThemeColor("tint");
-
-  return (
-    <TouchableOpacity
-      style={[
-        styles.chatBtn,
-        {
-          borderColor: text + "10",
-          // backgroundColor: text + "10",
-        },
-        style,
-      ]}
-      onPress={onPress}
-      activeOpacity={0.8}
-    >
-      {children}
-    </TouchableOpacity>
-  );
-};
-
 const DrawerFooter = () => {
-  const text = useThemeColor("text");
-  const tint = useThemeColor("tint");
   return (
     <View style={styles.footer}>
-      <View style={styles.cluster}>
-        <Button>
-          <LogOut stroke={tint} size={21} />
-          <Text style={styles.footerText}>Se déconnecter</Text>
-        </Button>
+      <View style={styles.footerLeft}>
+        <Image
+          source={require("../../assets/profile.jpeg")}
+          style={styles.footerAvatar}
+        />
+        <Text style={styles.footerTitle}>Mandjou Dama</Text>
       </View>
+
+      <Pressable hitSlop={30}>
+        <Ellipsis size={24} color={COLORS.white + "80"} />
+      </Pressable>
     </View>
   );
 };
@@ -169,31 +143,29 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   footer: {
-    padding: 16,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
-  chatBtn: {
-    padding: 8,
-    paddingVertical: 10,
-    borderWidth: 2,
-    borderRadius: 50,
+  footerLeft: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    borderCurve: "continuous",
-    width: 170,
-    gap: 5,
+    gap: 12,
   },
-  image: {
+  footerAvatar: {
     width: 32,
-    aspectRatio: 1,
+    height: 32,
     borderRadius: 16,
   },
-  footerText: {
+  footerTitle: {
+    // position: "absolute",
+    // left: "50%",
+    // transform: [{ translateX: "-50%" }],
     fontSize: 16,
+    fontFamily: "InterSemiBold",
+    color: COLORS.white,
   },
   cluster: {
     flexDirection: "row",
