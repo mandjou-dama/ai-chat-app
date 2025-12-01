@@ -1,91 +1,59 @@
-import { useThemeColor } from "../../hooks/useThemeColor";
 import {
   DrawerContentComponentProps,
+  DrawerContentScrollView,
   // DrawerItemList,
   useDrawerStatus,
 } from "@react-navigation/drawer";
 import { Image } from "expo-image";
-import { Ellipsis, LogOut } from "lucide-react-native";
-import React, { memo, useCallback, useEffect, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleProp,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Ellipsis } from "lucide-react-native";
+import React, { memo, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRoute } from "@react-navigation/native";
 import { ThemedText as Text } from "../ThemedText";
-import { DrawerItemList } from "./drawer-item-list";
 import { COLORS } from "../../constants";
+import { useChatsStore } from "../../store/chatsStore";
 
 const DrawerContent = memo((props: DrawerContentComponentProps) => {
-  const demos = (props.state?.routes?.length || 0) - 1 || 0;
-  const routeNames = props.state?.routes.map((route) => route.name) || [];
-  // console.log("Route names:", routeNames);
-
   const status = useDrawerStatus();
-  const [focused, setFocused] = useState(false);
+  const chats = useChatsStore((state) => state.chats);
+
+  const navigation = props.navigation;
+  const route = props.state.routes;
+
+  console.log(route);
 
   return (
     <SafeAreaView edges={["top", "bottom"]} style={styles.container}>
-      {/* <Header routes={demos} /> */}
-      <ScrollView
+      <DrawerContentScrollView
+        {...props}
         contentContainerStyle={styles.scrollViewContent}
         keyboardShouldPersistTaps="handled"
       >
-        <DrawerItemList {...props} />
-      </ScrollView>
+        {chats.map((chat) => (
+          <Pressable
+            key={chat.id}
+            onPress={() =>
+              navigation.navigate("ChatStack", {
+                screen: "Chat",
+                params: { chatId: chat.id },
+              })
+            }
+            style={{
+              marginBottom: 8,
+              borderRadius: 12,
+            }}
+          >
+            <Text numberOfLines={1} style={{ padding: 16, color: "white" }}>
+              {chat.title}
+            </Text>
+          </Pressable>
+        ))}
+      </DrawerContentScrollView>
       <DrawerFooter />
     </SafeAreaView>
   );
 });
-
-const Header = ({ routes }: { routes: number }) => {
-  const text = useThemeColor("text");
-  const tint = useThemeColor("tint");
-
-  return (
-    <View
-      style={[
-        styles.header,
-        {
-          borderColor: text + "10",
-        },
-      ]}
-    >
-      {/* <Pressable style={styles.headerButton} onPress={handlePress}>
-        <Home size={20} color={"#A0A0A0"} />
-        <ThemedText style={[styles.headerText, { color: textColor }]}>
-          Home
-        </ThemedText>
-      </Pressable>
-      <ThemedText>
-        {routes}
-        <Text style={styles.demoText}>{routes > 1 ? " demos" : " demo"}</Text>
-      </ThemedText> */}
-
-      <View style={styles.cluster}>
-        <Image
-          //   source={require("@/assets/images/dp.png")}
-          source={{
-            uri: "https://images.pexels.com/photos/4029925/pexels-photo-4029925.jpeg",
-          }}
-          // style={styles.image}
-        />
-        <View style={{}}>
-          <Text style={styles.headerText}>Mandjou Dama</Text>
-          <Text style={[styles.headerTextNumber, { color: tint }]}>
-            +223 78 43 73 23
-          </Text>
-        </View>
-      </View>
-      <View style={styles.cluster}></View>
-    </View>
-  );
-};
 
 const DrawerFooter = () => {
   return (
@@ -114,33 +82,7 @@ const styles = StyleSheet.create({
   scrollViewContent: {
     padding: 12,
     paddingTop: 24,
-    gap: 6,
-  },
-  header: {
-    marginHorizontal: 12,
-    paddingHorizontal: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    paddingVertical: 14,
-  },
-  headerButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
-    gap: 6,
-  },
-  headerText: {
-    fontSize: 15,
-    marginBottom: 3,
-  },
-  headerTextNumber: {
-    fontSize: 14,
-  },
-  demoText: {
-    fontSize: 14,
-    opacity: 0.7,
+    flexGrow: 1,
   },
   footer: {
     flexDirection: "row",

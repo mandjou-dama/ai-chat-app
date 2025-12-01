@@ -35,8 +35,6 @@ export default function ChatScreen() {
   const intensity = useSharedValue<number | undefined>(0);
   const drawerProgress = useDrawerProgress();
   const { width } = useWindowDimensions();
-  const text = useThemeColor("text");
-  const background = useThemeColor("background");
 
   useAnimatedReaction(
     () => drawerProgress.value,

@@ -1,8 +1,7 @@
 // src/navigation/RootDrawer.tsx
-import { Platform, useColorScheme, useWindowDimensions } from "react-native";
+import { Platform, useWindowDimensions } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import { useThemeColor } from "../hooks/useThemeColor";
 import DrawerContent from "../components/drawer/drawer-content";
 import { COLORS } from "../constants";
 import ChatStack from "./ChatStack";
@@ -11,8 +10,6 @@ const Drawer = createDrawerNavigator();
 
 export default function RootDrawer() {
   const { width } = useWindowDimensions();
-  const text = useThemeColor("text");
-  const theme = useColorScheme();
 
   return (
     <Drawer.Navigator
@@ -26,9 +23,9 @@ export default function RootDrawer() {
           width: width * 0.85,
           backgroundColor: COLORS.black,
         },
-        drawerActiveTintColor: text,
-        drawerActiveBackgroundColor: `${text}10`,
-        drawerInactiveTintColor: text + "90",
+        drawerActiveTintColor: COLORS.white,
+        drawerActiveBackgroundColor: `${COLORS.white}10`,
+        drawerInactiveTintColor: COLORS.white + "90",
         overlayColor:
           Platform.OS === "ios" ? "transparent" : COLORS.black + "80",
       }}
