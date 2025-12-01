@@ -3,15 +3,17 @@ import { ThemedText, ThemedTextWrapper } from "./ThemedText";
 import { Ghost, MenuIcon, SquarePen } from "lucide-react-native";
 import { Image } from "expo-image";
 import { COLORS } from "../constants";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 export default function ChatHeader() {
-  // const navigation = useNavigation<DrawerNavigationProp<any>>();
+  const navigation = useNavigation<DrawerNavigationProp<any>>();
 
   return (
     <View style={styles.header}>
       <Pressable
         style={styles.headerLeft}
-        // onPress={() => navigation.toggleDrawer()}
+        onPress={() => navigation.toggleDrawer()}
         hitSlop={30}
       >
         <Image
@@ -21,7 +23,7 @@ export default function ChatHeader() {
       </Pressable>
       <Text style={styles.headerTitle}>Nothing AI</Text>
       <View style={styles.headerRight}>
-        <SquarePen size={21} />
+        <SquarePen color={COLORS.white} size={21} />
       </View>
     </View>
   );

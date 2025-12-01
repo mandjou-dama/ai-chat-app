@@ -1,4 +1,9 @@
-import { Linking, useColorScheme, useWindowDimensions } from "react-native";
+import {
+  Linking,
+  Platform,
+  useColorScheme,
+  useWindowDimensions,
+} from "react-native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -11,6 +16,7 @@ import { useThemeColor } from "../hooks/useThemeColor";
 import DrawerContent from "../components/drawer/drawer-content";
 
 import HomeScreen from "./screens/Home";
+import { COLORS } from "../constants";
 
 const Drawer = createDrawerNavigator();
 
@@ -31,13 +37,14 @@ const RootDrawer = () => {
         swipeMinDistance: width * 0.025,
         drawerStyle: {
           width: width * 0.85,
-          backgroundColor: backgroundColor,
+          backgroundColor: COLORS.black,
         },
 
         drawerActiveTintColor: text,
         drawerActiveBackgroundColor: `${text}10`,
         drawerInactiveTintColor: text + "90",
-        overlayColor: "transparent",
+        overlayColor:
+          Platform.OS === "ios" ? "transparent" : COLORS.black + "80",
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
