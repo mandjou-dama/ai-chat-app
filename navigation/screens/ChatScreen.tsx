@@ -31,7 +31,7 @@ const BLUR_INTENSITY = 80;
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
-export default function HomeScreen() {
+export default function ChatScreen() {
   const intensity = useSharedValue<number | undefined>(0);
   const drawerProgress = useDrawerProgress();
   const { width } = useWindowDimensions();

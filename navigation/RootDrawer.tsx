@@ -1,31 +1,18 @@
-import {
-  Linking,
-  Platform,
-  useColorScheme,
-  useWindowDimensions,
-} from "react-native";
-import {
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItem,
-  DrawerItemList,
-} from "@react-navigation/drawer";
-import { NavigationContainer } from "@react-navigation/native";
+// src/navigation/RootDrawer.tsx
+import { Platform, useColorScheme, useWindowDimensions } from "react-native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import { useThemeColor } from "../hooks/useThemeColor";
 import DrawerContent from "../components/drawer/drawer-content";
-
-import HomeScreen from "./screens/ChatScreen";
 import { COLORS } from "../constants";
+import ChatStack from "./ChatStack";
 
 const Drawer = createDrawerNavigator();
 
-const RootDrawer = () => {
+export default function RootDrawer() {
   const { width } = useWindowDimensions();
   const text = useThemeColor("text");
-  const backgroundColor = useThemeColor("background");
   const theme = useColorScheme();
-  const isLight = theme === "light";
 
   return (
     <Drawer.Navigator
@@ -39,7 +26,6 @@ const RootDrawer = () => {
           width: width * 0.85,
           backgroundColor: COLORS.black,
         },
-
         drawerActiveTintColor: text,
         drawerActiveBackgroundColor: `${text}10`,
         drawerInactiveTintColor: text + "90",
@@ -47,16 +33,8 @@ const RootDrawer = () => {
           Platform.OS === "ios" ? "transparent" : COLORS.black + "80",
       }}
     >
-      <Drawer.Screen name="Home" component={HomeScreen} />
+      {/* Instead of HomeScreen, we use ChatStack */}
+      <Drawer.Screen name="ChatStack" component={ChatStack} />
     </Drawer.Navigator>
   );
-};
-
-const Navigation = () => {
-  return (
-    <NavigationContainer>
-      <RootDrawer />
-    </NavigationContainer>
-  );
-};
-export default Navigation;
+}
