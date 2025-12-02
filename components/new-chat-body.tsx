@@ -8,6 +8,7 @@ import {
   MessageCircle,
   ScanSearch,
   File,
+  ImageUpscale,
 } from "lucide-react-native";
 import { COLORS, SPACES } from "../constants";
 import { useKeyboardState } from "react-native-keyboard-controller";
@@ -23,7 +24,7 @@ const suggestions: Suggestion[] = [
   { icon: MessageCircle, title: "Ask anything", color: COLORS.blue },
   { icon: ImagePlus, title: "Create Images", color: COLORS.purple },
   { icon: Braces, title: "Code", color: COLORS.green },
-  { icon: ScanSearch, title: "Edit Image", color: COLORS.orange },
+  { icon: ImageUpscale, title: "Edit Image", color: COLORS.orange },
   { icon: File, title: "Analyze Docs", color: COLORS.yellow },
   { icon: Lightbulb, title: "Brainstorm", color: COLORS.pink },
 ];

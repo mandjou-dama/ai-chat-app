@@ -7,6 +7,7 @@ import {
   Fullscreen,
   ImagePlus,
   Images,
+  ImageUpscale,
 } from "lucide-react-native";
 import { simulatePress } from "../../shared/simulate-press";
 import { COLORS } from "../../constants";
@@ -41,22 +42,20 @@ export const MenuItems: FC = () => {
       />
       {/* Secondary actions: transparent backgrounds with borders for distinction */}
       <MenuItem
-        icon={<ImagePlus size={_iconSize} color={_iconColor} />} // White icons for visibility on transparent bg
+        icon={<ImagePlus size={_iconSize} color={COLORS.purple} />} // White icons for visibility on transparent bg
         label="Create image"
         iconContainerClassName={{
-          backgroundColor: "transparent",
-          borderWidth: 1,
-          borderColor: COLORS.white + "20",
+          backgroundColor: COLORS.purple + "10",
+          borderColor: COLORS.purple + "20",
         }}
         onPress={simulatePress}
       />
       <MenuItem
-        icon={<Fullscreen size={_iconSize} color={_iconColor} />}
+        icon={<ImageUpscale size={_iconSize} color={COLORS.orange} />}
         label="Edit image"
         iconContainerClassName={{
-          backgroundColor: "transparent",
-          borderWidth: 1,
-          borderColor: COLORS.white + "20",
+          backgroundColor: COLORS.orange + "10",
+          borderColor: COLORS.orange + "10",
         }}
         onPress={simulatePress}
       />

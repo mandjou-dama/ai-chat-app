@@ -11,7 +11,7 @@ export const COLORS = {
   secondary: "#FF69B4",
 
   blue: "#0e75fcff",
-  purple: "#970ceeff",
+  purple: "#a81dff",
   green: "#00a700ff",
   orange: "#ff8c00",
   yellow: "#ffff00",
