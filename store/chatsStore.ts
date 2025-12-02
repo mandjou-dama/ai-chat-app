@@ -10,6 +10,7 @@ type Message = {
 
 type Chat = {
   id: string;
+  pinned?: boolean;
   title: string;
   messages: Message[];
 };
@@ -25,6 +26,7 @@ export const useChatsStore = create<ChatsStore>((set) => ({
     {
       id: "1",
       title: "How do I improve performance in React Native?",
+      pinned: true,
       messages: [
         {
           id: "m1",
@@ -44,6 +46,7 @@ export const useChatsStore = create<ChatsStore>((set) => ({
     {
       id: "2",
       title: "Why One Punch Man Saison 3 animations are so bad?",
+      pinned: true,
       messages: [
         {
           id: "m3",

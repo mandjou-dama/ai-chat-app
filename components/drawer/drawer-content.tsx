@@ -1,28 +1,18 @@
 import {
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  // DrawerItemList,
-  useDrawerStatus,
 } from "@react-navigation/drawer";
+import { Text } from "react-native";
 import { Image } from "expo-image";
-import { CircleFadingPlus, Ellipsis } from "lucide-react-native";
-import React, { memo, useState } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { CircleFadingPlus, Ellipsis, Pin } from "lucide-react-native";
+import React, { memo } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRoute } from "@react-navigation/native";
-import { ThemedText as Text } from "../ThemedText";
 import { COLORS, SPACES } from "../../constants";
 import { useChatsStore } from "../../store/chatsStore";
 import { Button } from "../button";
 
 const DrawerContent = memo((props: DrawerContentComponentProps) => {
-  const status = useDrawerStatus();
   const chats = useChatsStore((state) => state.chats);
 
   const navigation = props.navigation;
@@ -31,38 +21,56 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
     routes.state?.routes[0].params as { chatId?: string } | undefined
   )?.chatId;
 
-  // console.log(JSON.stringify(routes.state?.routes[0].params?.chatId, null, 2));
-
   return (
     <SafeAreaView edges={["top", "bottom"]} style={styles.container}>
-      <DrawerHeader />
+      <DrawerHeader title="All chats" />
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.scrollViewContent}
         keyboardShouldPersistTaps="handled"
       >
         {chats.map((chat) => (
-          <Pressable
+          <View
             key={chat.id}
-            onPress={() =>
-              navigation.navigate("ChatStack", {
-                screen: "Chat",
-                params: { chatId: chat.id },
-              })
-            }
             style={{
-              backgroundColor:
-                route === chat.id ? COLORS.white + "10" : "transparent",
-              borderWidth: route === chat.id ? 1 : 0,
-              borderColor: COLORS.white + "10",
-              borderCurve: "continuous",
-              borderRadius: 50,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
             }}
           >
-            <Text numberOfLines={1} style={{ padding: 16, color: "white" }}>
-              {chat.title}
-            </Text>
-          </Pressable>
+            <Pressable
+              key={chat.id}
+              onPress={() =>
+                navigation.navigate("ChatStack", {
+                  screen: "Chat",
+                  params: { chatId: chat.id },
+                })
+              }
+              style={{
+                backgroundColor:
+                  route === chat.id ? COLORS.white + "10" : "transparent",
+                borderWidth: route === chat.id ? 1 : 0,
+                borderColor: COLORS.white + "10",
+                borderCurve: "continuous",
+                borderRadius: 50,
+                flexDirection: "row",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Text
+                numberOfLines={1}
+                style={{
+                  padding: 16,
+                  color: "white",
+                  maxWidth: chat.pinned ? "92%" : "100%",
+                }}
+              >
+                {chat.title}
+              </Text>
+              {chat.pinned && <Pin size={16} color={COLORS.white + "60"} />}
+            </Pressable>
+          </View>
         ))}
       </DrawerContentScrollView>
       <DrawerFooter />
@@ -70,8 +78,8 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
   );
 });
 
-const DrawerHeader = () => {
-  return <Text style={styles.drawerHeaderTitle}>Chats history</Text>;
+const DrawerHeader = ({ title }: { title: string }) => {
+  return <Text style={styles.drawerHeaderTitle}>{title}</Text>;
 };
 
 const DrawerFooter = () => {

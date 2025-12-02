@@ -9,12 +9,13 @@ import {
   Images,
 } from "lucide-react-native";
 import { simulatePress } from "../../shared/simulate-press";
+import { COLORS } from "../../constants";
 
 // grok-attach-file-menu-animation 🔽
 
 // Consistent icon sizing across all menu items for visual harmony
 const _iconSize = 16; // Optimal size for 40px circular containers (2.5x padding ratio)
-const _iconColor = "black"; // High contrast against white icon backgrounds
+const _iconColor = COLORS.white; // High contrast against white icon backgrounds
 
 export const MenuItems: FC = () => {
   return (
@@ -40,22 +41,22 @@ export const MenuItems: FC = () => {
       />
       {/* Secondary actions: transparent backgrounds with borders for distinction */}
       <MenuItem
-        icon={<ImagePlus size={_iconSize} color="white" />} // White icons for visibility on transparent bg
+        icon={<ImagePlus size={_iconSize} color={_iconColor} />} // White icons for visibility on transparent bg
         label="Create image"
         iconContainerClassName={{
           backgroundColor: "transparent",
           borderWidth: 1,
-          borderColor: "white",
+          borderColor: COLORS.white + "20",
         }}
         onPress={simulatePress}
       />
       <MenuItem
-        icon={<Fullscreen size={_iconSize} color="white" />}
+        icon={<Fullscreen size={_iconSize} color={_iconColor} />}
         label="Edit image"
         iconContainerClassName={{
           backgroundColor: "transparent",
           borderWidth: 1,
-          borderColor: "white",
+          borderColor: COLORS.white + "20",
         }}
         onPress={simulatePress}
       />
