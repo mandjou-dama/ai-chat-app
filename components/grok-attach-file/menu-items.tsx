@@ -4,15 +4,12 @@ import { MenuItem } from "./menu-item";
 import {
   Camera,
   File,
-  Fullscreen,
   ImagePlus,
   Images,
   ImageUpscale,
 } from "lucide-react-native";
 import { simulatePress } from "../../shared/simulate-press";
 import { COLORS } from "../../constants";
-
-// grok-attach-file-menu-animation 🔽
 
 // Consistent icon sizing across all menu items for visual harmony
 const _iconSize = 16; // Optimal size for 40px circular containers (2.5x padding ratio)
