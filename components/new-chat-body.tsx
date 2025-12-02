@@ -37,7 +37,7 @@ export default function NewChatBody() {
         Hi Mandjou, how can I help you today?
       </Text>
 
-      <Animated.View entering={FadeIn.delay(0)} exiting={FadeOut.delay(0)}>
+      <View>
         <View style={styles.suggestionsContainer}>
           {suggestions.map((suggestion, index) => (
             <View key={suggestion.title + index} style={styles.suggestion}>
@@ -46,7 +46,7 @@ export default function NewChatBody() {
             </View>
           ))}
         </View>
-      </Animated.View>
+      </View>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { StyleProp, TouchableOpacity, ViewStyle } from "react-native";
-import { useThemeColor } from "../hooks/useThemeColor";
+import { COLORS } from "../constants";
 
 export const Button = ({
   children,
@@ -10,13 +10,11 @@ export const Button = ({
   onPress?: () => void;
   style?: StyleProp<ViewStyle>;
 }) => {
-  const text = useThemeColor("text");
-
   return (
     <TouchableOpacity
       style={[
         {
-          borderColor: text + "10",
+          borderColor: COLORS.white + "10",
           padding: 8,
           borderWidth: 1,
           borderRadius: 50,

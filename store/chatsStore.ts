@@ -90,6 +90,24 @@ export const useChatsStore = create<ChatsStore>((set) => ({
         },
       ],
     },
+    {
+      id: "4",
+      title: "Milestone payment proposal for client project",
+      messages: [
+        {
+          id: "m7",
+          role: "user",
+          text: "eeking an experienced React Native (Expo) developer to build the MVP for GoLocal, a mobile app focused on discovering local events and activities. ",
+          createdAt: Date.now() - 200000,
+        },
+        {
+          id: "m8",
+          role: "assistant",
+          text: "Here are clear, professional milestone descriptions you can send on Upwork, including deliverables, due dates, and suggested amounts.",
+          createdAt: Date.now() - 180000,
+        },
+      ],
+    },
   ],
 
   createChat: () => {

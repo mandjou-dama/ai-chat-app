@@ -5,26 +5,37 @@ import {
   useDrawerStatus,
 } from "@react-navigation/drawer";
 import { Image } from "expo-image";
-import { Ellipsis } from "lucide-react-native";
+import { CircleFadingPlus, Ellipsis } from "lucide-react-native";
 import React, { memo, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRoute } from "@react-navigation/native";
 import { ThemedText as Text } from "../ThemedText";
-import { COLORS } from "../../constants";
+import { COLORS, SPACES } from "../../constants";
 import { useChatsStore } from "../../store/chatsStore";
+import { Button } from "../button";
 
 const DrawerContent = memo((props: DrawerContentComponentProps) => {
   const status = useDrawerStatus();
   const chats = useChatsStore((state) => state.chats);
 
   const navigation = props.navigation;
-  const route = props.state.routes;
+  const routes = props.state.routes[props.state.index];
+  const route = (
+    routes.state?.routes[0].params as { chatId?: string } | undefined
+  )?.chatId;
 
-  console.log(route);
+  // console.log(JSON.stringify(routes.state?.routes[0].params?.chatId, null, 2));
 
   return (
     <SafeAreaView edges={["top", "bottom"]} style={styles.container}>
+      <DrawerHeader />
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={styles.scrollViewContent}
@@ -40,8 +51,12 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
               })
             }
             style={{
-              marginBottom: 8,
-              borderRadius: 12,
+              backgroundColor:
+                route === chat.id ? COLORS.white + "10" : "transparent",
+              borderWidth: route === chat.id ? 1 : 0,
+              borderColor: COLORS.white + "10",
+              borderCurve: "continuous",
+              borderRadius: 50,
             }}
           >
             <Text numberOfLines={1} style={{ padding: 16, color: "white" }}>
@@ -55,6 +70,10 @@ const DrawerContent = memo((props: DrawerContentComponentProps) => {
   );
 });
 
+const DrawerHeader = () => {
+  return <Text style={styles.drawerHeaderTitle}>Chats history</Text>;
+};
+
 const DrawerFooter = () => {
   return (
     <View style={styles.footer}>
@@ -66,9 +85,14 @@ const DrawerFooter = () => {
         <Text style={styles.footerTitle}>Mandjou Dama</Text>
       </View>
 
-      <Pressable hitSlop={30}>
-        <Ellipsis size={24} color={COLORS.white + "80"} />
-      </Pressable>
+      <View style={styles.cluster}>
+        <Button>
+          <Ellipsis size={18} color={COLORS.white} />
+        </Button>
+        <Button>
+          <CircleFadingPlus color={COLORS.white} size={18} />
+        </Button>
+      </View>
     </View>
   );
 };
@@ -79,9 +103,34 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  drawerHeader: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  searchInput: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: COLORS.white + "10",
+    backgroundColor: COLORS.white + "10",
+    borderCurve: "continuous",
+    color: COLORS.white,
+    flex: 1,
+  },
+  drawerHeaderTitle: {
+    marginTop: SPACES.lg,
+    paddingHorizontal: SPACES.lg * 1.5,
+    fontSize: 14,
+    textTransform: "uppercase",
+    fontFamily: "InterSemiBold",
+    color: COLORS.white + "60",
+  },
   scrollViewContent: {
-    padding: 12,
-    paddingTop: 24,
+    paddingTop: 10,
     flexGrow: 1,
   },
   footer: {
