@@ -1,27 +1,8 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  Dimensions,
-  Pressable,
-} from "react-native";
-import { BlurView } from "expo-blur";
-import {
-  Blur,
-  Canvas,
-  Path,
-  processTransform3d,
-  Skia,
-  usePathValue,
-} from "@shopify/react-native-skia";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import Animated, {
   Easing,
-  FadeInDown,
   interpolate,
-  interpolateColor,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withDelay,
   withRepeat,
@@ -49,13 +30,6 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const BUTTON_WIDTH = 110;
 const BUTTON_HEIGHT = 40;
 
-// "Breathing" ovals constants
-// - OVAL_BREATHE_DURATION: ping-pong timing (ms) so left/right ovals alternate calmly
-// - PRIMARY/SECONDARY: endpoints for color interpolation to create subtle hue shift
-const OVAL_BREATHE_DURATION = 4000;
-const OVAL_PRIMARY_COLOR = COLORS.white;
-const OVAL_SECONDARY_COLOR = COLORS.black;
-
 // Shimmer constants
 // - SHIMMER_DELAY: initial pause so shimmer doesn't compete with first CTA impression
 // - SHIMMER_BASE_DURATION: base sweep speed; scaled by width for consistent perceived velocity
@@ -66,92 +40,9 @@ const SHIMMER_BASE_DURATION = 3000;
 const SHIMMER_REFERENCE_WIDTH = 100;
 const SHIMMER_OVERSHOOT = 1.2;
 
-const GRADIENT_COLOR = COLORS.white;
+const GRADIENT_COLOR = COLORS.black;
 
 const SendMessageButton = () => {
-  // Oval layout derived from button height to keep proportions across devices
-  const ovalWidth = BUTTON_HEIGHT * 3.4;
-  const ovalHeight = BUTTON_HEIGHT * 1.7;
-  const centerY = BUTTON_HEIGHT / 1.5 + ovalHeight / 2.2;
-
-  const leftOvalRect = {
-    x: ovalWidth / 13,
-    y: centerY - ovalHeight / 2,
-    width: ovalWidth,
-    height: ovalHeight,
-  };
-  const leftOvalPathBase = Skia.Path.Make().addOval(leftOvalRect);
-
-  // Shared driver for breathing animation (0→1 ping-pong)
-  const breathingProgress = useSharedValue(0);
-
-  // Left oval scales up as progress goes 0→1 (1.0→1.2)
-  // Visually: subtle expansion to imply "inhale"
-  const scaleLeft = useDerivedValue(() => {
-    return interpolate(breathingProgress.get(), [0, 1], [1, 1.2]);
-  });
-
-  // Color interpolation uses the same progress for left oval
-  const colorProgressLeft = useDerivedValue(() => {
-    return breathingProgress.get();
-  });
-
-  // Apply Skia transform on UI thread; cheaper than re-creating paths every frame
-  const leftOvalPath = usePathValue((path) => {
-    "worklet";
-    path.transform(processTransform3d([{ scale: scaleLeft.get() }]));
-  }, leftOvalPathBase);
-
-  const rightOvalRect = {
-    x: BUTTON_WIDTH - 1.2 * ovalWidth,
-    y: centerY - ovalHeight / 2,
-    width: ovalWidth,
-    height: ovalHeight,
-  };
-  const rightOvalPathBase = Skia.Path.Make().addOval(rightOvalRect);
-
-  // Right oval mirrors left: it expands when left contracts and vice versa
-  const scaleRight = useDerivedValue(() => {
-    const opposite = 1 - breathingProgress.get();
-    return interpolate(opposite, [0, 1], [1, 1.2]);
-  });
-
-  // Inverse color phase to reinforce alternating effect
-  const colorProgressRight = useDerivedValue(() => {
-    return 1 - breathingProgress.get();
-  });
-
-  // Skia transform for right oval
-  const rightOvalPath = usePathValue((path) => {
-    "worklet";
-    path.transform(processTransform3d([{ scale: scaleRight.get() }]));
-  }, rightOvalPathBase);
-
-  // Start ping-pong breathing: withRepeat + reverse = yo-yo
-  useEffect(() => {
-    breathingProgress.set(
-      withRepeat(withTiming(1, { duration: OVAL_BREATHE_DURATION }), -1, true)
-    );
-  }, [breathingProgress]);
-
-  // Left color: progress 0→1 maps PRIMARY→SECONDARY (CLAMP implied)
-  const leftOvalColor = useDerivedValue(() => {
-    return interpolateColor(
-      colorProgressLeft.get(),
-      [0, 1],
-      [OVAL_PRIMARY_COLOR, OVAL_SECONDARY_COLOR]
-    );
-  });
-
-  // Right color: inverted progress for alternating hue shift
-  const rightOvalColor = useDerivedValue(() => {
-    return interpolateColor(
-      colorProgressRight.get(),
-      [0, 1],
-      [OVAL_PRIMARY_COLOR, OVAL_SECONDARY_COLOR]
-    );
-  });
-
   // Measured width of shimmer sub-tree, used to compute offscreen start position
   const shimmerComponentWidth = useSharedValue(0);
 
@@ -261,27 +152,11 @@ const SendMessageButton = () => {
             alignSelf: "center",
             borderRadius: 999,
             overflow: "hidden",
-            borderColor: Platform.OS === "android" ? "#111827" : null, // approximates neutral-900 / neutral-700
+            borderColor: "transparent",
+            backgroundColor: COLORS.white,
           },
         ]}
       >
-        {/* Breathing shapes */}
-        {Platform.OS === "ios" && (
-          <BlurView
-            pointerEvents="none"
-            intensity={50}
-            tint="dark"
-            style={StyleSheet.absoluteFillObject}
-          />
-        )}
-        <Canvas pointerEvents="none" style={styles.canvas}>
-          <Path path={leftOvalPath} color={leftOvalColor}>
-            <Blur blur={35} />
-          </Path>
-          <Path path={rightOvalPath} color={rightOvalColor}>
-            <Blur blur={35} />
-          </Path>
-        </Canvas>
         <View
           pointerEvents="none"
           style={{
@@ -297,8 +172,10 @@ const SendMessageButton = () => {
             marginLeft: -6,
           }}
         >
-          <SendHorizontal size={16} color="white" />
-          <Text style={{ color: "white", fontSize: 16, fontWeight: "medium" }}>
+          <SendHorizontal size={16} color={COLORS.black} />
+          <Text
+            style={{ color: COLORS.black, fontSize: 14, fontWeight: "medium" }}
+          >
             Send
           </Text>
         </View>
@@ -349,7 +226,6 @@ const styles = StyleSheet.create({
   container: {
     height: BUTTON_HEIGHT,
     width: BUTTON_WIDTH,
-    // borderWidth: Platform.OS === "ios" ? StyleSheet.hairlineWidth : 1,
     borderCurve: "continuous",
   },
   canvas: {
